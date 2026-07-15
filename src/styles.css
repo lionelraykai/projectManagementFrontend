@@ -1,0 +1,634 @@
+:root {
+  --color-bg: #f5f6f8;
+  --color-surface: #ffffff;
+  --color-border: #e2e4e9;
+  --color-text: #1a1d23;
+  --color-text-muted: #6b7280;
+  --color-primary: #4f46e5;
+  --color-primary-hover: #4338ca;
+  --color-danger: #dc2626;
+  --color-danger-bg: #fef2f2;
+  --radius: 10px;
+  --shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #14161a;
+    --color-surface: #1c1f26;
+    --color-border: #2c303a;
+    --color-text: #e8eaed;
+    --color-text-muted: #9aa0ac;
+    --color-danger-bg: #3a1a1a;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0 0 0.4em;
+}
+
+/* Layout */
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.app-title {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--color-primary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.app-header-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.user-name {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 40vw;
+}
+
+.app-main {
+  flex: 1;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+@media (max-width: 480px) {
+  .app-header {
+    padding: 0.65rem 1rem;
+  }
+
+  .app-main {
+    padding: 1rem;
+  }
+}
+
+.page-header {
+  margin-bottom: 1rem;
+}
+
+.back-link {
+  display: inline-block;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: 0.875rem;
+  margin-bottom: 0.35rem;
+}
+
+.back-link:hover {
+  color: var(--color-primary);
+}
+
+.empty-state {
+  color: var(--color-text-muted);
+  padding: 2rem 0;
+  text-align: center;
+}
+
+/* Auth page */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+}
+
+.auth-subtitle {
+  color: var(--color-text-muted);
+  margin-top: 0;
+}
+
+.auth-tabs {
+  display: flex;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+
+.auth-tabs button {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.auth-tabs button.active {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+/* Cards */
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+}
+
+/* Forms */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.field-input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  /* 16px, not smaller — anything under 16px makes Safari on iOS zoom the
+     page in on focus, which is jarring on every mobile form field. */
+  font-size: 1rem;
+  transition: border-color 0.15s ease;
+}
+
+/* Native <select> sizes itself to its widest <option> in most browsers,
+   ignoring flexbox stretch/min-width — a long "name (email)" option in the
+   member-invite picker was blowing out the layout width on narrow screens. */
+select.field-input {
+  max-width: 100%;
+}
+
+.field-input:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+  border-color: var(--color-primary);
+}
+
+.field-input-error {
+  border-color: var(--color-danger);
+}
+
+.field-error {
+  color: var(--color-danger);
+  font-size: 0.75rem;
+}
+
+.inline-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.inline-form .field {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+.inline-form .field-submit {
+  flex: 0 0 auto;
+}
+
+/* Invisible label-sized spacer so the submit button's top lines up with the
+   other fields' inputs instead of their labels (fields can have different
+   label/input heights, e.g. a multi-line textarea next to a single-line input). */
+.field-spacer-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  visibility: hidden;
+}
+
+@media (max-width: 560px) {
+  .inline-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .inline-form .field,
+  .inline-form .field-submit {
+    flex: 1 1 auto;
+  }
+
+  .inline-form .field-submit > .btn {
+    width: 100%;
+  }
+
+  .member-form-actions {
+    width: 100%;
+  }
+
+  .member-form-actions .btn {
+    flex: 1;
+  }
+}
+
+/* Buttons */
+
+.btn {
+  min-height: 2.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.btn-secondary {
+  background: var(--color-bg);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.btn-danger {
+  background: var(--color-danger);
+  color: #fff;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-muted);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  color: var(--color-text);
+}
+
+/* Badges */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.badge-status-todo {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.badge-status-in_progress {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.badge-status-done {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badge-priority-low {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.badge-priority-medium {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge-priority-high {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.badge-role-owner,
+.badge-role-member,
+.badge-role-viewer {
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+
+/* Projects */
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.project-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.project-card-link .project-card {
+  transition:
+    border-color 0.15s ease,
+    transform 0.1s ease,
+    box-shadow 0.15s ease;
+}
+
+.project-card-link:hover .project-card,
+.project-card-link:focus-visible .project-card {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 24, 40, 0.12);
+}
+
+.project-card-link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}
+
+.project-card h3 {
+  color: var(--color-text);
+}
+
+.project-card-desc {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  margin: 0.3rem 0 0.6rem;
+}
+
+/* Task board */
+
+.task-board {
+  display: grid;
+  /* Self-adapting instead of a single hard breakpoint: a tablet-width board
+     (e.g. 768px) naturally gets 2 columns instead of jumping straight from
+     3 to 1, and it still collapses to 1 column once a column would go below
+     260px, which is what a phone-width viewport needs anyway. */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.task-column {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.85rem;
+  min-height: 200px;
+}
+
+.task-column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.task-count {
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+}
+
+.task-column-empty {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.task-column-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.task-card {
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color 0.15s ease;
+}
+
+.task-card:hover {
+  border-color: var(--color-primary);
+}
+
+.task-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.task-card-header h4 {
+  font-size: 0.9rem;
+}
+
+.task-card-controls {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.task-card-controls .field-input {
+  /* Font-size stays at the 16px base (not shrunk) — anything smaller
+     re-triggers iOS Safari's zoom-on-focus on these selects. */
+  padding: 0.4rem 0.5rem;
+}
+
+.task-card-desc {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* Project members */
+
+.members-card {
+  margin-bottom: 1.5rem;
+}
+
+.members-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.members-header h3 {
+  margin: 0;
+}
+
+.member-form-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.member-list {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.member-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.member-row:last-child {
+  border-bottom: none;
+}
+
+.member-name {
+  flex: 1;
+  font-size: 0.875rem;
+}
+
+.member-remove {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.member-form {
+  margin: 0.85rem 0 0;
+}
+
+/* Spinner */
+
+.spinner-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Errors */
+
+.error-banner {
+  background: var(--color-danger-bg);
+  border: 1px solid var(--color-danger);
+  color: var(--color-danger);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.error-banner ul {
+  margin: 0.4rem 0 0;
+  padding-left: 1.2rem;
+}
